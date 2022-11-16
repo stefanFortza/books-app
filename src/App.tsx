@@ -5,10 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./routes/home/home";
 import BookPage from "./routes/book/bookpage";
 import { initDB } from "react-indexed-db";
-import { DBConfig } from "./database/DBConfig";
 import AddBookRoute from "./routes/addBookRoute/addBookRoute";
-
-initDB(DBConfig);
 
 function App() {
   return (

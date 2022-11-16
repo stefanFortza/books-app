@@ -1,31 +1,27 @@
+import { useLiveQuery } from "dexie-react-hooks";
 import { FunctionComponent, useEffect, useState } from "react";
 import { Button, Row } from "react-bootstrap";
 import { useIndexedDB } from "react-indexed-db";
+import { db } from "../../database/db";
 import { BookModel } from "../../models/book.model";
 import Book from "../book/book.component";
 
 interface BooksProps {}
 
 const BookList: FunctionComponent<BooksProps> = () => {
-  const { add, getAll } = useIndexedDB("books");
-  const [books, setBooks] = useState<BookModel[]>([]);
-
-  useEffect(() => {
-    getAll<BookModel>().then((booksList) => {
-      console.log(booksList);
-      setBooks(booksList);
-    });
-  }, []);
+  // const { add, getAll } = useIndexedDB("books");
+  // const [books, setBooks] = useState<BookModel[]>([]);
+  const books = useLiveQuery(() => db.books.toArray()) || [];
 
   const handleClick = () => {
-    add({ title: "LOTR", price: 53, description: "written by Tolkien" }).then(
-      (event) => {
-        console.log("ID Generated: ", event);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    // add({ title: "LOTR", price: 53, description: "written by Tolkien" }).then(
+    //   (event) => {
+    //     console.log("ID Generated: ", event);
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //   }
+    // );
   };
   return (
     <>

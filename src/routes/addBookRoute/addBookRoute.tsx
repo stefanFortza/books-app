@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { useIndexedDB } from "react-indexed-db";
+import { db } from "../../database/db";
 import { BookModel } from "../../models/book.model";
 
 interface AddBookRouteProps {}
@@ -18,12 +19,15 @@ const defaultFormFields = {
 };
 
 const AddBookRoute: FunctionComponent<AddBookRouteProps> = () => {
-  const { add } = useIndexedDB("books");
+  // const { add, } = useIndexedDB("books");
   const [formFields, setFormFields] = useState(defaultFormFields);
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
-    add<BookModel>({ ...formFields });
+    const id = await db.books.add({
+      ...formFields,
+    });
+    // add<BookModel>({ ...formFields });
   };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
