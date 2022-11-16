@@ -1,33 +1,72 @@
-import { FunctionComponent } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  ChangeEventHandler,
+  FormEvent,
+  FormEventHandler,
+  FunctionComponent,
+  useState,
+} from "react";
+import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
+import { useIndexedDB } from "react-indexed-db";
+import { BookModel } from "../../models/book.model";
 
 interface AddBookRouteProps {}
 
+const defaultFormFields = {
+  title: "",
+  price: 0,
+  description: "",
+};
+
 const AddBookRoute: FunctionComponent<AddBookRouteProps> = () => {
+  const { add } = useIndexedDB("books");
+  const [formFields, setFormFields] = useState(defaultFormFields);
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    add<BookModel>({ ...formFields });
+  };
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const { name, value } = event.currentTarget;
+    setFormFields({ ...formFields, [name]: value });
+  };
+
   return (
-    <Container>
+    <Container className="w-50">
       <h1 className="mt-4 text-center">Add a new book</h1>
-      <Form className="mt-5 border p-3 rounded">
-        <Row className="mb-3">
-          <Form.Group as={Col} controlId="formGridEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
-          </Form.Group>
+      <Form className="mt-5 border p-3 rounded" onSubmit={handleSubmit}>
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Book Title</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter book title"
+            onChange={handleChange}
+            name="title"
+          />
+        </Form.Group>
 
-          <Form.Group as={Col} controlId="formGridPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
-        </Row>
-
-        <Form.Group className="mb-3" controlId="formGridAddress1">
-          <Form.Label>Address</Form.Label>
-          <Form.Control placeholder="1234 Main St" />
+        <Form.Group as={Col} controlId="formGridPassword">
+          <Form.Label>Book Price</Form.Label>
+          <InputGroup>
+            <InputGroup.Text id="inputGroupPrepend">$</InputGroup.Text>
+            <Form.Control
+              type="number"
+              placeholder="0.00"
+              onChange={handleChange}
+              name="price"
+            />
+          </InputGroup>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formGridAddress2">
-          <Form.Label>Address 2</Form.Label>
-          <Form.Control placeholder="Apartment, studio, or floor" />
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            placeholder="Enter book description"
+            name="description"
+            onChange={handleChange}
+          />
         </Form.Group>
 
         <Button variant="primary" type="submit">
