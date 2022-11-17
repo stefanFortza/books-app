@@ -8,8 +8,8 @@ export class MySubClassedDexie extends Dexie {
 
   constructor() {
     super("myDatabase");
-    this.version(1).stores({
-      books: "++id, title, price, description", // Primary key and indexed props
+    this.version(2).stores({
+      books: "++id, title, price, author, description", // Primary key and indexed props
     });
   }
 }

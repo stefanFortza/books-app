@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { useIndexedDB } from "react-indexed-db";
+import { useNavigate } from "react-router-dom";
 import { db } from "../../database/db";
 import { BookModel } from "../../models/book.model";
 
@@ -15,11 +16,12 @@ interface AddBookRouteProps {}
 const defaultFormFields = {
   title: "",
   price: 0,
+  author: "",
   description: "",
 };
 
 const AddBookRoute: FunctionComponent<AddBookRouteProps> = () => {
-  // const { add, } = useIndexedDB("books");
+  const navigate = useNavigate();
   const [formFields, setFormFields] = useState(defaultFormFields);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
@@ -27,7 +29,7 @@ const AddBookRoute: FunctionComponent<AddBookRouteProps> = () => {
     const id = await db.books.add({
       ...formFields,
     });
-    // add<BookModel>({ ...formFields });
+    navigate(`/books/${id}`);
   };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -60,6 +62,16 @@ const AddBookRoute: FunctionComponent<AddBookRouteProps> = () => {
               name="price"
             />
           </InputGroup>
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Book Author</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter book author"
+            onChange={handleChange}
+            name="author"
+          />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formGridAddress2">

@@ -12,8 +12,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
-        <Route path="book" element={<BookPage />} />
         <Route path="addBook" element={<AddBookRoute />} />
+        <Route path="books/:bookId" element={<BookPage />} />
       </Route>
     </Routes>
   );
