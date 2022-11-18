@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./routes/home/home";
 import BookPage from "./routes/book/bookpage";
-import { initDB } from "react-indexed-db";
 import AddBookRoute from "./routes/addBookRoute/addBookRoute";
 
 function App() {

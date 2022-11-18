@@ -1,36 +1,45 @@
 import { IndexableType } from "dexie";
 import { useLiveQuery } from "dexie-react-hooks";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import {
   Button,
   Card,
   Col,
   Container,
+  Form,
   ListGroup,
   Row,
   Spinner,
 } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Book from "../../components/book/book.component";
+import BookPageData from "../../components/bookPageData/bookPageData.component";
+import CommentList from "../../components/commentList/commentList.component";
 import { db } from "../../database/db";
 
 interface BookProps {}
 
 const BookPage: FunctionComponent<BookProps> = () => {
   const { bookId } = useParams();
-  const navigate = useNavigate();
+  const [comment, setComment] = useState("");
   const currentBook = useLiveQuery(() =>
     db.books.where({ id: parseInt(bookId!) }).first()
   );
 
-  const handleDelete: React.MouseEventHandler<HTMLButtonElement> = async (
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    setComment(event.currentTarget.value);
+    console.log(comment);
+  };
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
     event
   ) => {
-    const n = await db.books.where({ id: parseInt(bookId!) }).delete();
-    navigate("/");
+    event.preventDefault();
+    const id = await db.comments.add({
+      text: comment,
+      bookId: currentBook?.id,
+    });
+    setComment("");
   };
-
-  console.log(currentBook);
 
   return (
     <Container className="mb-5">
@@ -47,36 +56,7 @@ const BookPage: FunctionComponent<BookProps> = () => {
             </Card>
           </Col>
           <Col>
-            <Card>
-              <Card.Body>
-                <Card.Title className="">{currentBook.title}</Card.Title>
-                <Card.Text className="text-center"></Card.Text>
-              </Card.Body>
-              <ListGroup className="list-group-flush">
-                <ListGroup.Item>Price: {currentBook.price}</ListGroup.Item>
-                <ListGroup.Item>{currentBook.description}</ListGroup.Item>
-                <ListGroup.Item className="text-center">
-                  {currentBook.author}
-                </ListGroup.Item>
-              </ListGroup>
-            </Card>
-            <Row>
-              <Button
-                variant="primary"
-                className="mt-3 mx-3 ms-auto"
-                style={{ width: "40%" }}
-              >
-                Add to cart
-              </Button>
-              <Button
-                variant="danger"
-                className="mt-3 mx-3 me-auto"
-                style={{ width: "40%" }}
-                onClick={handleDelete}
-              >
-                Delete
-              </Button>
-            </Row>
+            <BookPageData book={currentBook} />
           </Col>
         </Row>
       ) : (
@@ -84,6 +64,28 @@ const BookPage: FunctionComponent<BookProps> = () => {
           <span className="visually-hidden">Loading...</span>
         </Spinner>
       )}
+      <Card className="my-5">
+        <Card.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Add a comment</Form.Label>
+              <Form.Control
+                as="textarea"
+                placeholder="Add a comment"
+                name="comment"
+                onChange={handleChange}
+                value={comment}
+              />
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
+
+      {currentBook?.id && <CommentList bookId={currentBook.id} />}
     </Container>
   );
 };
