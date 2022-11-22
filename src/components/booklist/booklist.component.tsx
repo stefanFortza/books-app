@@ -8,7 +8,6 @@ import Book from "../book/book.component";
 interface BooksProps {}
 
 const BookList: FunctionComponent<BooksProps> = () => {
-  // const [books, setBooks] = useState<BookModel[]>([]);
   const books = useLiveQuery(() => db.books.toArray()) || [];
 
   return (

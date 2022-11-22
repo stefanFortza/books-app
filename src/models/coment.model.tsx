@@ -1,5 +1,6 @@
 export interface CommentModel {
   id?: number;
   bookId?: number;
-  text: string;
+  comment: string;
+  rating: number;
 }

@@ -23,8 +23,7 @@ const Book: FunctionComponent<BookProps> = ({ book, ...other }) => {
       </Link>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
-        <Card.Text>{description}</Card.Text>
-        <Card.Text>{price}</Card.Text>
+        <Card.Text>{price.toPrecision(3)} RON</Card.Text>
       </Card.Body>
     </Card>
     // </Col>

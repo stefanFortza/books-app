@@ -1,6 +1,6 @@
-import React from "react";
 import Navigation from "./routes/navigation/navigation";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./routes/home/home";
 import BookPage from "./routes/book/bookpage";
