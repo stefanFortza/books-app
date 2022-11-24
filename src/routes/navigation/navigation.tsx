@@ -12,9 +12,15 @@ const Navigation: FunctionComponent<NavigationProps> = () => {
     <>
       <Navbar bg="dark" expand="lg" variant="dark">
         <Container>
-          <Navbar.Brand>Book</Navbar.Brand>
+          <Navbar.Brand>
+            <i
+              style={{ width: "30px", height: "30px" }}
+              className="bi bi-book d-inline-block align-top"
+            ></i>
+            Book Shop
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Collapse>
             <Nav className="me-auto">
               <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
               <Nav.Link onClick={() => navigate("/book")}>Book Page</Nav.Link>
@@ -34,6 +40,11 @@ const Navigation: FunctionComponent<NavigationProps> = () => {
                   Separated link
                 </NavDropdown.Item>
               </NavDropdown>
+            </Nav>
+            <Nav>
+              <Nav.Link onClick={() => navigate("/authentification")}>
+                Sign In
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

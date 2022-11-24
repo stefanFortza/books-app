@@ -13,6 +13,7 @@ const initialValues = {
   rating: 0,
 };
 
+//TODO Add formik
 const CommentForm: FunctionComponent<CommentFormProps> = ({ currentBook }) => {
   const [formFields, setFormFields] = useState(initialValues);
   const [validated, setValidated] = useState(false);

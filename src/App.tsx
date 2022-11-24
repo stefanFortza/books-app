@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./routes/home/home";
 import BookPage from "./routes/book/bookpage";
 import AddBookRoute from "./routes/addBookRoute/addBookRoute";
+import AuthentificationPage from "./routes/authentificationPage/authentificationPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="addBook" element={<AddBookRoute />} />
         <Route path="books/:bookId" element={<BookPage />} />
+        <Route path="/authentification" element={<AuthentificationPage />} />
       </Route>
     </Routes>
   );
