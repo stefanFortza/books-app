@@ -1,10 +1,5 @@
-import { Formik, FormikHelpers } from "formik";
-import {
-  ChangeEventHandler,
-  FormEventHandler,
-  FunctionComponent,
-  useState,
-} from "react";
+import { Formik } from "formik";
+import { FunctionComponent } from "react";
 import { Button, Col, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../database/db";
@@ -12,7 +7,6 @@ import * as Yup from "yup";
 
 interface AddABookFormProps {}
 
-type FormFieldsType = typeof defaultFormFields;
 const defaultFormFields = {
   title: "",
   price: 0,
@@ -39,37 +33,17 @@ const AddBookSchema = Yup.object().shape({
 const AddABookForm: FunctionComponent<AddABookFormProps> = (props) => {
   const navigate = useNavigate();
 
-  //TODO ADD FORMIK LIBRARY
-  const handleSubmit = async (
-    values: FormFieldsType,
-    { setSubmitting }: FormikHelpers<FormFieldsType>
-  ) => {
-    setSubmitting(false);
-    // const form = event.currentTarget;
-    // console.log(form.checkValidity());
-    // if (form.checkValidity() === false) {
-    //   event.stopPropagation();
-    //   setValidated(true);
-    //   return;
-    // }
-    const id = await db.books.add({
-      ...values,
-    });
-    navigate(`/books/${id}`);
-  };
-
-  // const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-  //   const { name, value } = event.currentTarget;
-  //   console.log(event.currentTarget.name);
-  //   setFormFields({ ...formFields, [name]: parseFloat(value) });
-  //   console.log(formFields);
-  // };
-
   return (
     <Formik
       initialValues={defaultFormFields}
       validationSchema={AddBookSchema}
-      onSubmit={handleSubmit}
+      onSubmit={async (values, { setSubmitting, validateForm }) => {
+        setSubmitting(false);
+        const id = await db.books.add({
+          ...values,
+        });
+        navigate(`/books/${id}`);
+      }}
     >
       {({
         handleSubmit,
@@ -95,7 +69,7 @@ const AddABookForm: FunctionComponent<AddABookFormProps> = (props) => {
               value={values.title}
               name="title"
               isValid={touched.title && !errors.title}
-              isInvalid={!!errors.title?.length}
+              isInvalid={touched.title && !!errors.title}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             <Form.Control.Feedback type="invalid">
@@ -116,7 +90,7 @@ const AddABookForm: FunctionComponent<AddABookFormProps> = (props) => {
                 value={values.price}
                 name="price"
                 isValid={touched.price && !errors.price}
-                isInvalid={!!errors.price}
+                isInvalid={touched.price && !!errors.price}
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               <Form.Control.Feedback type="invalid">
@@ -136,7 +110,7 @@ const AddABookForm: FunctionComponent<AddABookFormProps> = (props) => {
               value={values.author}
               name="author"
               isValid={touched.author && !errors.author}
-              isInvalid={!!errors.author}
+              isInvalid={touched.author && !!errors.author}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             <Form.Control.Feedback type="invalid">
@@ -154,7 +128,7 @@ const AddABookForm: FunctionComponent<AddABookFormProps> = (props) => {
               onBlur={handleBlur}
               value={values.description}
               isValid={touched.description && !errors.description}
-              isInvalid={!!errors.description}
+              isInvalid={touched.description && !!errors.description}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             <Form.Control.Feedback type="invalid">
@@ -167,14 +141,6 @@ const AddABookForm: FunctionComponent<AddABookFormProps> = (props) => {
         </Form>
       )}
     </Formik>
-    // <Form
-    //   noValidate
-    //   validated={validated}
-    //   className="mt-5 border p-3 rounded"
-    //   onSubmit={handleSubmit}
-    // >
-
-    // </Form>
   );
 };
 

@@ -34,8 +34,8 @@ const BookList: FunctionComponent<BooksProps> = () => {
         <Row xs={1} md={3} className="g-4">
           {books.length &&
             books.map((book) => (
-              <Col md={4}>
-                <Book key={book.id} book={book} />
+              <Col key={book.id} md={4}>
+                <Book book={book} />
               </Col>
             ))}
         </Row>

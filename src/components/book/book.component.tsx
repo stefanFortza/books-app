@@ -8,10 +8,9 @@ interface BookProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const Book: FunctionComponent<BookProps> = ({ book, ...other }) => {
-  const { title, description, price } = book;
+  const { title, price } = book;
 
   return (
-    // <Col>
     <Card {...other}>
       <Link to={`/books/${book.id}`}>
         <Card.Img
@@ -23,10 +22,9 @@ const Book: FunctionComponent<BookProps> = ({ book, ...other }) => {
       </Link>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
-        <Card.Text>{price.toPrecision(3)} RON</Card.Text>
+        <Card.Text>{price.toFixed(2)} RON</Card.Text>
       </Card.Body>
     </Card>
-    // </Col>
   );
 };
 
