@@ -1,18 +1,7 @@
-import { IndexableType } from "dexie";
 import { useLiveQuery } from "dexie-react-hooks";
-import { FunctionComponent, useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  ListGroup,
-  Row,
-  Spinner,
-} from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
-import Book from "../../components/book/book.component";
+import { FunctionComponent } from "react";
+import { Container, Spinner } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import BookPageData from "../../components/bookPageData/bookPageData.component";
 import CommentForm from "../../components/commentForm/commentForm.component";
 import CommentList from "../../components/commentList/commentList.component";

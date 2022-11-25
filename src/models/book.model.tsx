@@ -4,4 +4,5 @@ export interface BookModel {
   price: number;
   author: string;
   description: string;
+  // userId: number;
 }

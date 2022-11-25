@@ -1,12 +1,20 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { NavigationLink } from "./navigation.styles";
+import { Outlet, useNavigate } from "react-router-dom";
+import { getCurrentUser, signOutUser } from "../../utils/utils";
 
 interface NavigationProps {}
 
 const Navigation: FunctionComponent<NavigationProps> = () => {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState<number | null>(null);
+
+  //TODO Add context
+  useEffect(() => {
+    getCurrentUser().then((currUser) => {
+      setCurrentUser(currUser);
+    });
+  }, []);
 
   return (
     <>
@@ -42,9 +50,13 @@ const Navigation: FunctionComponent<NavigationProps> = () => {
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link onClick={() => navigate("/authentification")}>
-                Sign In
-              </Nav.Link>
+              {currentUser ? (
+                <Nav.Link onClick={() => signOutUser()}>Sign Out</Nav.Link>
+              ) : (
+                <Nav.Link onClick={() => navigate("/authentification")}>
+                  Sign In
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
