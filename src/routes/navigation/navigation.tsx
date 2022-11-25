@@ -1,20 +1,18 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Outlet, useNavigate } from "react-router-dom";
-import { getCurrentUser, signOutUser } from "../../utils/utils";
+import { UserContext } from "../../contexts/user/user.context";
 
 interface NavigationProps {}
 
 const Navigation: FunctionComponent<NavigationProps> = () => {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState<number | null>(null);
+  const { currentUser, signOutUser } = useContext(UserContext);
 
-  //TODO Add context
-  useEffect(() => {
-    getCurrentUser().then((currUser) => {
-      setCurrentUser(currUser);
-    });
-  }, []);
+  const signOut = async () => {
+    await signOutUser();
+    navigate(0);
+  };
 
   return (
     <>
@@ -51,7 +49,10 @@ const Navigation: FunctionComponent<NavigationProps> = () => {
             </Nav>
             <Nav>
               {currentUser ? (
-                <Nav.Link onClick={() => signOutUser()}>Sign Out</Nav.Link>
+                <>
+                  <Nav.Link onClick={signOut}>Sign Out</Nav.Link>
+                  <Navbar.Text>{currentUser.email}</Navbar.Text>
+                </>
               ) : (
                 <Nav.Link onClick={() => navigate("/authentification")}>
                   Sign In

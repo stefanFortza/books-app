@@ -1,9 +1,12 @@
 import { useFormik } from "formik";
 import localforage from "localforage";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { db } from "../../database/db";
 import * as yup from "yup";
+import { UserContext } from "../../contexts/user/user.context";
+import bcrypt from "bcryptjs";
+import { useNavigate } from "react-router-dom";
 
 interface SignInFormProps {}
 
@@ -18,13 +21,21 @@ const signInFormSchema = yup.object({
 });
 
 const SignInForm: FunctionComponent<SignInFormProps> = () => {
+  const { signInUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: initialSignInFormValues,
     validationSchema: signInFormSchema,
     onSubmit: async (values, {}) => {
       const user = await db.users.where("email").equals(values.email).first();
-      if (user?.password === values.password) {
-        localforage.setItem("currentUserId", user.id);
+      if (user) {
+        const result = await bcrypt.compare(values.password, user.password);
+
+        if (result) {
+          signInUser(user);
+          navigate("/");
+        }
       }
     },
   });
