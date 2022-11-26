@@ -51,7 +51,7 @@ const Navigation: FunctionComponent<NavigationProps> = () => {
               {currentUser ? (
                 <>
                   <Nav.Link onClick={signOut}>Sign Out</Nav.Link>
-                  <Navbar.Text>{currentUser.email}</Navbar.Text>
+                  <Navbar.Text>{currentUser.username}</Navbar.Text>
                 </>
               ) : (
                 <Nav.Link onClick={() => navigate("/authentification")}>

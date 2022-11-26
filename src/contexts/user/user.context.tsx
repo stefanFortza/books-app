@@ -15,6 +15,7 @@ interface UserContextProviderProps {
 export const UserContext = createContext<IUserContext>({
   currentUser: {
     email: "",
+    username: "",
     password: "",
   },
   signOutUser: async () => {},

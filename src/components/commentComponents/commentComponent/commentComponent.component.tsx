@@ -1,5 +1,5 @@
 import { FunctionComponent, useMemo } from "react";
-import { CommentModel } from "../../models/coment.model";
+import { CommentModel } from "../../../models/coment.model";
 
 interface CommentProps {
   comment: CommentModel;

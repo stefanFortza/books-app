@@ -2,9 +2,9 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { FunctionComponent } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import BookPageData from "../../components/bookPageData/bookPageData.component";
-import CommentForm from "../../components/commentForm/commentForm.component";
-import CommentList from "../../components/commentList/commentList.component";
+import BookPageData from "../../components/bookComponents/bookPageData/bookPageData.component";
+import CommentForm from "../../components/commentComponents/commentForm/commentForm.component";
+import CommentList from "../../components/commentComponents/commentList/commentList.component";
 import { db } from "../../database/db";
 
 interface BookProps {}

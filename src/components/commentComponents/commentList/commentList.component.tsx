@@ -1,7 +1,7 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { FunctionComponent } from "react";
-import { db } from "../../database/db";
-import { BookModel } from "../../models/book.model";
+import { db } from "../../../database/db";
+import { BookModel } from "../../../models/book.model";
 import CommentComponent from "../commentComponent/commentComponent.component";
 
 interface CommentListProps {

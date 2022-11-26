@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
 import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../database/db";
-import { BookModel } from "../../models/book.model";
+import { db } from "../../../database/db";
+import { BookModel } from "../../../models/book.model";
 
 interface BookPageDataProps {
   book: BookModel;

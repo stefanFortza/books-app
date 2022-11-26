@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { Card, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { BookModel } from "../../models/book.model";
+import { BookModel } from "../../../models/book.model";
 
 interface BookProps extends React.HTMLAttributes<HTMLElement> {
   book: BookModel;

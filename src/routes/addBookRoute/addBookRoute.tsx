@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { Container } from "react-bootstrap";
-import AddABookForm from "../../components/addBookForm/addBookForm.component";
+import AddABookForm from "../../components/bookComponents/addBookForm/addBookForm.component";
 
 interface AddBookRouteProps {}
 

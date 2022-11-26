@@ -1,26 +1,30 @@
 import { useFormik } from "formik";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../database/db";
+import { db } from "../../../database/db";
 import bcrypt from "bcryptjs";
 import * as yup from "yup";
+import { UserContext } from "../../../contexts/user/user.context";
 
 interface SignUpFormProps {}
 
 const initialSignUpFormValues = {
   email: "",
   password: "",
+  username: "",
   confirmPassword: "",
 };
 
 const signUpFormSchema = yup.object({
   email: yup.string().email().required(),
-  password: yup.string().required(),
-  confirmPassword: yup.string().required(),
+  username: yup.string().min(3).required(),
+  password: yup.string().min(3).required(),
+  confirmPassword: yup.string().min(3).required(),
 });
 
 const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
+  const { signInUser } = useContext(UserContext);
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: initialSignUpFormValues,
@@ -32,12 +36,14 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
         return;
       }
       const hashedPassword = await bcrypt.hash(values.password, 3);
-
+      const user = {
+        email: values.email,
+        password: hashedPassword,
+        username: values.username,
+      };
       try {
-        const id = await db.users.add({
-          email: values.email,
-          password: hashedPassword,
-        });
+        const id = await db.users.add(user);
+        signInUser({ ...user, id: parseInt(id.toString()) });
       } catch (e: any) {
         if (e.name === "ConstraintError")
           setFieldError("email", "email already taken");
@@ -66,6 +72,26 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
         />
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.
+        </Form.Text>
+        <Form.Control.Feedback type="invalid">
+          {errors.email}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="usernameSignUp">
+        <Form.Label>Username</Form.Label>
+        <Form.Control
+          type="text"
+          name="username"
+          placeholder="Enter username"
+          value={values.username}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          isValid={touched.username && !errors.username}
+          isInvalid={touched.username && !!errors.username}
+        />
+        <Form.Text className="text-muted">
+          We'll never share your userName with anyone else.
         </Form.Text>
         <Form.Control.Feedback type="invalid">
           {errors.email}

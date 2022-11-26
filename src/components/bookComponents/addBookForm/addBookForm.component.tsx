@@ -2,7 +2,7 @@ import { Formik, useFormik } from "formik";
 import { FunctionComponent } from "react";
 import { Button, Col, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../database/db";
+import { db } from "../../../database/db";
 import * as Yup from "yup";
 
 interface AddABookFormProps {}

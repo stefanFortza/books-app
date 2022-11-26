@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { Button, Card, Col, Form, FormControl, Row } from "react-bootstrap";
-import { db } from "../../database/db";
-import { BookModel } from "../../models/book.model";
+import { db } from "../../../database/db";
+import { BookModel } from "../../../models/book.model";
 import "./commentForm.styles.css";
 
 interface CommentFormProps {

@@ -1,8 +1,8 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { FunctionComponent, useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import { db } from "../../database/db";
-import { BookModel } from "../../models/book.model";
+import { db } from "../../../database/db";
+import { BookModel } from "../../../models/book.model";
 import Book from "../book/book.component";
 
 interface BooksProps {}

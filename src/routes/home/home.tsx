@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { Container } from "react-bootstrap";
-import BookList from "../../components/booklist/booklist.component";
+import BookList from "../../components/bookComponents/booklist/booklist.component";
 
 interface HomeProps {}
 

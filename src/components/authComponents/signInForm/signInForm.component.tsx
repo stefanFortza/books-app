@@ -2,9 +2,9 @@ import { useFormik } from "formik";
 import localforage from "localforage";
 import { FunctionComponent, useContext } from "react";
 import { Button, Form } from "react-bootstrap";
-import { db } from "../../database/db";
+import { db } from "../../../database/db";
 import * as yup from "yup";
-import { UserContext } from "../../contexts/user/user.context";
+import { UserContext } from "../../../contexts/user/user.context";
 import bcrypt from "bcryptjs";
 import { useNavigate } from "react-router-dom";
 
