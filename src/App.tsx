@@ -1,35 +1,60 @@
 import Navigation from "./routes/navigation/navigation";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { redirect, Route, Routes } from "react-router-dom";
+import {
+  createBrowserRouter,
+  json,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import Home from "./routes/home/home";
-import BookPage from "./routes/book/bookpage";
-import AddBookRoute from "./routes/addBookRoute/addBookRoute";
+import AddBookPage from "./routes/addBookPage/addBookPage";
 import AuthentificationPage from "./routes/authentificationPage/authentificationPage";
-import { UserContext } from "./contexts/user/user.context";
-import { useContext } from "react";
-import RequireAuth from "./components/authComponents/requireAuth/requireAuth.component";
+import { getCurrentUser } from "./utils/utils";
+import BookPage from "./routes/bookPage/bookPage";
 
-//TODO add react router v6
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Navigation />,
+    children: [
+      {
+        index: true,
+        element: <div>Home Page</div>,
+      },
+      {
+        path: "books",
+        children: [
+          {
+            index: true,
+            element: <Home />,
+          },
+          {
+            path: "addBook",
+            loader: async () => {
+              const user = await getCurrentUser();
+              if (!user) {
+                return redirect("/auth");
+              }
+            },
+            element: <AddBookPage />,
+          },
+        ],
+      },
+      {
+        path: "book/:bookId",
+        element: <BookPage />,
+      },
+      {
+        path: "/auth",
+        element: <AuthentificationPage />,
+      },
+    ],
+  },
+]);
+
 function App() {
-  const { currentUser } = useContext(UserContext);
-  return (
-    <Routes>
-      <Route path="/" element={<Navigation />}>
-        <Route
-          index
-          element={
-            <RequireAuth>
-              <Home />
-            </RequireAuth>
-          }
-        />
-        <Route path="addBook" element={<AddBookRoute />} />
-        <Route path="books/:bookId" element={<BookPage />} />
-        <Route path="/authentification" element={<AuthentificationPage />} />
-      </Route>
-    </Routes>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

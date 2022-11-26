@@ -3,5 +3,5 @@ export interface CommentModel {
   bookId?: number;
   comment: string;
   rating: number;
-  // userId: number;
+  userId: number;
 }

@@ -14,10 +14,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <UserContextProvider>
-        <App />
-      </UserContextProvider>
-    </BrowserRouter>
+    {/* <BrowserRouter> */}
+    <UserContextProvider>
+      <App />
+    </UserContextProvider>
+    {/* </BrowserRouter> */}
   </React.StrictMode>
 );

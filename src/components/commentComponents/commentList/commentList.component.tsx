@@ -17,7 +17,9 @@ const CommentList: FunctionComponent<CommentListProps> = ({ currentBook }) => {
   return (
     <div>
       {comments?.length &&
-        comments.map((comment) => <CommentComponent comment={comment} />)}
+        comments.map((comment) => (
+          <CommentComponent key={comment.id} comment={comment} />
+        ))}
     </div>
   );
 };

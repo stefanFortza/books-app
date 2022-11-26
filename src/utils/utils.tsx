@@ -1,10 +1,10 @@
 import dexie from "dexie";
 import localforage from "localforage";
+import { UserModel } from "../models/user.model";
 
-export async function getCurrentUser() {
-  return await localforage.getItem<number>("currentUserId");
-}
+export const getCurrentUser = async () =>
+  await localforage.getItem<UserModel | null>("currentUser");
 
 export async function signOutUser() {
-  localforage.removeItem("currentUserId");
+  await localforage.removeItem("currentUser");
 }

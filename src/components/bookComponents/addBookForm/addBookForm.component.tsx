@@ -1,9 +1,10 @@
 import { Formik, useFormik } from "formik";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import { Button, Col, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../../database/db";
 import * as Yup from "yup";
+import { UserContext } from "../../../contexts/user/user.context";
 
 interface AddABookFormProps {}
 
@@ -30,7 +31,9 @@ const AddBookSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const AddABookForm: FunctionComponent<AddABookFormProps> = (props) => {
+const AddBookForm: FunctionComponent<AddABookFormProps> = (props) => {
+  const { currentUser } = useContext(UserContext);
+
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: defaultFormFields,
@@ -38,8 +41,9 @@ const AddABookForm: FunctionComponent<AddABookFormProps> = (props) => {
       setSubmitting(false);
       const id = await db.books.add({
         ...values,
+        userId: currentUser?.id!,
       });
-      navigate(`/books/${id}`);
+      navigate(`/book/${id}`);
     },
     validationSchema: AddBookSchema,
   });
@@ -135,4 +139,4 @@ const AddABookForm: FunctionComponent<AddABookFormProps> = (props) => {
   );
 };
 
-export default AddABookForm;
+export default AddBookForm;

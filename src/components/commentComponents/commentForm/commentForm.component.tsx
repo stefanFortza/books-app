@@ -1,5 +1,7 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useContext, useState } from "react";
 import { Button, Card, Col, Form, FormControl, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../contexts/user/user.context";
 import { db } from "../../../database/db";
 import { BookModel } from "../../../models/book.model";
 import "./commentForm.styles.css";
@@ -15,6 +17,8 @@ const initialValues = {
 
 //TODO Add formik
 const CommentForm: FunctionComponent<CommentFormProps> = ({ currentBook }) => {
+  const { currentUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [formFields, setFormFields] = useState(initialValues);
   const [validated, setValidated] = useState(false);
 
@@ -28,6 +32,10 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ currentBook }) => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
     event
   ) => {
+    if (!currentUser?.id) {
+      navigate("/auth");
+      return;
+    }
     const form = event.currentTarget;
     event.preventDefault();
 
@@ -40,6 +48,7 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ currentBook }) => {
     const id = await db.comments.add({
       ...formFields,
       bookId: currentBook?.id,
+      userId: currentUser.id,
     });
 
     setFormFields(initialValues);

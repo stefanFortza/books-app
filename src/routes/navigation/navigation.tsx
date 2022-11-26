@@ -29,8 +29,8 @@ const Navigation: FunctionComponent<NavigationProps> = () => {
           <Navbar.Collapse>
             <Nav className="me-auto">
               <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
-              <Nav.Link onClick={() => navigate("/book")}>Book Page</Nav.Link>
-              <Nav.Link onClick={() => navigate("/addBook")}>
+              <Nav.Link onClick={() => navigate("/books")}>Books Page</Nav.Link>
+              <Nav.Link onClick={() => navigate("/books/addBook")}>
                 Add a book
               </Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
@@ -54,9 +54,7 @@ const Navigation: FunctionComponent<NavigationProps> = () => {
                   <Navbar.Text>{currentUser.username}</Navbar.Text>
                 </>
               ) : (
-                <Nav.Link onClick={() => navigate("/authentification")}>
-                  Sign In
-                </Nav.Link>
+                <Nav.Link onClick={() => navigate("/auth")}>Sign In</Nav.Link>
               )}
             </Nav>
           </Navbar.Collapse>
