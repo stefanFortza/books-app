@@ -42,9 +42,10 @@ const UserContextProvider: FunctionComponent<UserContextProviderProps> = (
     await localforage.setItem("currentUser", user);
     setCurrentUser(user);
   };
-  const value: IUserContext = { currentUser, signOutUser, signInUser };
   return (
-    <UserContext.Provider value={value}>{props.children}</UserContext.Provider>
+    <UserContext.Provider value={{ currentUser, signOutUser, signInUser }}>
+      {props.children}
+    </UserContext.Provider>
   );
 };
 

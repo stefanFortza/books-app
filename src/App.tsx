@@ -10,7 +10,7 @@ import {
 import Home from "./routes/home/home";
 import AddBookPage from "./routes/addBookPage/addBookPage";
 import AuthentificationPage from "./routes/authentificationPage/authentificationPage";
-import { getCurrentUser } from "./utils/utils";
+import { getCurrentUser, withAuth } from "./utils/utils";
 import BookPage from "./routes/bookPage/bookPage";
 
 const router = createBrowserRouter([
@@ -31,12 +31,9 @@ const router = createBrowserRouter([
           },
           {
             path: "addBook",
-            loader: async () => {
-              const user = await getCurrentUser();
-              if (!user) {
-                return redirect("/auth");
-              }
-            },
+            loader: withAuth(({ request }) => {
+              console.log(request.url);
+            }),
             element: <AddBookPage />,
           },
         ],

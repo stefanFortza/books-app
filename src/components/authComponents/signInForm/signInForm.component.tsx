@@ -27,7 +27,8 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
   const formik = useFormik({
     initialValues: initialSignInFormValues,
     validationSchema: signInFormSchema,
-    onSubmit: async (values, {}) => {
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(false);
       const user = await db.users.where("email").equals(values.email).first();
       if (user) {
         const result = await bcrypt.compare(values.password, user.password);

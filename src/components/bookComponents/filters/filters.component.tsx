@@ -26,6 +26,7 @@ const Filters: FunctionComponent<FiltersProps> = ({ setFilters }) => {
             .filter((value, index, self) => self.indexOf(value) === index)
             .map((author) => (
               <div
+                key={author}
                 onClick={(e) => {
                   setFilters(e.currentTarget.innerText);
                 }}
