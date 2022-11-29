@@ -6,7 +6,7 @@ import { db } from "../../../database/db";
 import * as yup from "yup";
 import { UserContext } from "../../../contexts/user/user.context";
 import bcrypt from "bcryptjs";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface SignInFormProps {}
 
@@ -22,7 +22,9 @@ const signInFormSchema = yup.object({
 
 const SignInForm: FunctionComponent<SignInFormProps> = () => {
   const { signInUser } = useContext(UserContext);
+  const location = useLocation();
   const navigate = useNavigate();
+  console.log(location);
 
   const formik = useFormik({
     initialValues: initialSignInFormValues,
@@ -35,6 +37,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
 
         if (result) {
           signInUser(user);
+          // if(location.state)
           navigate("/");
         }
       }

@@ -4,6 +4,7 @@ import BookList from "../../components/bookComponents/booklist/booklist.componen
 
 interface HomeProps {}
 
+//TODO find better name
 const Home: FunctionComponent<HomeProps> = () => {
   return (
     <Container className="mx-4">

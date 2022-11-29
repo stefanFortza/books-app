@@ -6,7 +6,9 @@ import localforage from "localforage";
 import UserContextProvider from "./contexts/user/user.context";
 
 localforage.config({
-  driver: localforage.LOCALSTORAGE,
+  driver: localforage.INDEXEDDB,
+  description: "store for local data",
+  name: "user cache",
 });
 
 const root = ReactDOM.createRoot(
@@ -14,10 +16,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    {/* <BrowserRouter> */}
     <UserContextProvider>
       <App />
     </UserContextProvider>
-    {/* </BrowserRouter> */}
   </React.StrictMode>
 );
