@@ -2,7 +2,7 @@ import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Outlet, useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/user/user.context";
-import { PageNames } from "./pagesNames";
+import { AbsolutePageNames, PageNames } from "./pagesNames";
 
 interface NavigationProps {}
 
@@ -29,13 +29,17 @@ const Navigation: FunctionComponent<NavigationProps> = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse>
             <Nav className="me-auto">
-              <Nav.Link onClick={() => navigate(PageNames.Root)}>Home</Nav.Link>
-              <Nav.Link onClick={() => navigate(PageNames.Books)}>
+              <Nav.Link onClick={() => navigate(AbsolutePageNames.Root)}>
+                Home
+              </Nav.Link>
+              <Nav.Link onClick={() => navigate(AbsolutePageNames.Books)}>
                 Books Page
               </Nav.Link>
               <Nav.Link
                 onClick={() =>
-                  navigate("/books/add", { state: { from: "/books/add" } })
+                  navigate(AbsolutePageNames.AddBook, {
+                    state: { from: "/books/add" },
+                  })
                 }
               >
                 Add a book
