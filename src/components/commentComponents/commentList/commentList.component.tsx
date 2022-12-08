@@ -1,11 +1,7 @@
-import { Collection, IndexableType } from "dexie";
 import { useLiveQuery } from "dexie-react-hooks";
 import { FunctionComponent } from "react";
-import { db } from "../../../database/db";
-import { BookModel } from "../../../models/book.model";
-import { CommentModel } from "../../../models/coment.model";
-import { UserModel } from "../../../models/user.model";
-import { joinCommentsWithUsers } from "../../../utils/joins";
+import { BookModel } from "../../../api/models/book.model";
+import { useAPI } from "../../../utils/hooks";
 import CommentComponent from "../commentComponent/commentComponent.component";
 
 interface CommentListProps {
@@ -14,14 +10,15 @@ interface CommentListProps {
 
 const CommentList: FunctionComponent<CommentListProps> = ({ currentBook }) => {
   const { id } = currentBook;
+  const { CommentsAPI } = useAPI();
   const commentsAndUsers = useLiveQuery(async () => {
-    const comments = await db.comments.where("bookId").equals(id!).toArray();
+    const comments = await CommentsAPI.getAll({ bookId: id });
     if (comments) {
-      return joinCommentsWithUsers(comments);
+      return CommentsAPI.joinWithUsers(comments);
     }
+
     return;
   });
-  console.log(commentsAndUsers);
 
   return (
     <div>

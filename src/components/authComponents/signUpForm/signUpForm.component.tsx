@@ -2,10 +2,11 @@ import { useFormik } from "formik";
 import { FunctionComponent, useContext } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../../database/db";
+import { db } from "../../../api/database/db";
 import bcrypt from "bcryptjs";
 import * as yup from "yup";
 import { UserContext } from "../../../contexts/user/user.context";
+import { useAPI } from "../../../utils/hooks";
 
 interface SignUpFormProps {}
 
@@ -26,6 +27,7 @@ const signUpFormSchema = yup.object({
 const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
   const { signInUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const { UsersAPI } = useAPI();
   const formik = useFormik({
     initialValues: initialSignUpFormValues,
     validationSchema: signUpFormSchema,
@@ -42,7 +44,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
         username: values.username,
       };
       try {
-        const id = await db.users.add(user);
+        const id = await UsersAPI.addUsers(user);
         signInUser({ ...user, id: parseInt(id.toString()) });
       } catch (e: any) {
         if (e.name === "ConstraintError")

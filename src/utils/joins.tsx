@@ -1,6 +1,6 @@
-import { db } from "../database/db";
-import { CommentModel } from "../models/coment.model";
-import { UserModel } from "../models/user.model";
+import { db } from "../api/database/db";
+import { CommentModel } from "../api/models/coment.model";
+import { UserModel } from "../api/models/user.model";
 
 export async function joinCommentsWithUsers(comments: CommentModel[]) {
   let commentsAndUsers: { comment: CommentModel; user: UserModel }[] = [];

@@ -1,12 +1,11 @@
 import { useFormik } from "formik";
-import localforage from "localforage";
-import { FunctionComponent, useContext } from "react";
+import { FunctionComponent } from "react";
 import { Button, Form } from "react-bootstrap";
-import { db } from "../../../database/db";
 import * as yup from "yup";
-import { UserContext } from "../../../contexts/user/user.context";
 import bcrypt from "bcryptjs";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../../utils/utils";
+import { useAPI } from "../../../utils/hooks";
 
 interface SignInFormProps {}
 
@@ -21,7 +20,8 @@ const signInFormSchema = yup.object({
 });
 
 const SignInForm: FunctionComponent<SignInFormProps> = () => {
-  const { signInUser } = useContext(UserContext);
+  const { signInUser } = useUserContext();
+  const { UsersAPI } = useAPI();
   const location = useLocation();
   const navigate = useNavigate();
   console.log(location);
@@ -31,7 +31,8 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
     validationSchema: signInFormSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(false);
-      const user = await db.users.where("email").equals(values.email).first();
+      // const user = await db.users.where("email").equals(values.email).first();
+      const user = await UsersAPI.getUser({ email: values.email });
       if (user) {
         const result = await bcrypt.compare(values.password, user.password);
 

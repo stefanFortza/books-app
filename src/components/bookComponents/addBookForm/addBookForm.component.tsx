@@ -1,10 +1,10 @@
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import { FunctionComponent, useContext } from "react";
-import { Button, Col, Form, InputGroup } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../../database/db";
 import * as Yup from "yup";
 import { UserContext } from "../../../contexts/user/user.context";
+import { useAPI } from "../../../utils/hooks";
 
 interface AddABookFormProps {}
 
@@ -33,17 +33,17 @@ const AddBookSchema = Yup.object().shape({
 
 const AddBookForm: FunctionComponent<AddABookFormProps> = (props) => {
   const { currentUser } = useContext(UserContext);
-
+  const { BooksAPI } = useAPI();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: defaultFormFields,
     onSubmit: async (values, { setSubmitting, validateForm }) => {
       setSubmitting(false);
-      const id = await db.books.add({
+      const id = await BooksAPI.add({
         ...values,
         userId: currentUser?.id!,
       });
-      navigate(`/book/${id}`);
+      navigate(`/books/show/${id}`);
     },
     validationSchema: AddBookSchema,
   });

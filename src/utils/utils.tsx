@@ -1,7 +1,8 @@
-import dexie from "dexie";
 import localforage from "localforage";
-import { UserModel } from "../models/user.model";
+import { UserModel } from "../api/models/user.model";
 import { LoaderFunction, redirect } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../contexts/user/user.context";
 
 export const getCurrentUser = async () => {
   return localforage.getItem<UserModel>("currentUser");
@@ -24,3 +25,5 @@ export const withAuth = (fn: LoaderFunction) => {
 
   return newFunc;
 };
+
+export const useUserContext = () => useContext(UserContext);

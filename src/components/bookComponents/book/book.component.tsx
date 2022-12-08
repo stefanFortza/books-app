@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { Card, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { BookModel } from "../../../models/book.model";
+import { BookModel } from "../../../api/models/book.model";
 
 interface BookProps extends React.HTMLAttributes<HTMLElement> {
   book: BookModel;
@@ -12,7 +12,7 @@ const Book: FunctionComponent<BookProps> = ({ book, ...other }) => {
 
   return (
     <Card {...other}>
-      <Link to={`/book/${book.id}`}>
+      <Link to={`/books/show/${book.id}`}>
         <Card.Img
           variant="top"
           src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"

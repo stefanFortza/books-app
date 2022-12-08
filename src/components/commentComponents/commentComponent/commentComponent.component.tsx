@@ -1,8 +1,6 @@
-import { useLiveQuery } from "dexie-react-hooks";
 import { FunctionComponent, useMemo } from "react";
-import { db } from "../../../database/db";
-import { CommentModel } from "../../../models/coment.model";
-import { UserModel } from "../../../models/user.model";
+import { CommentModel } from "../../../api/models/coment.model";
+import { UserModel } from "../../../api/models/user.model";
 
 interface CommentProps {
   comment: CommentModel;

@@ -1,6 +1,6 @@
 import localforage from "localforage";
 import { createContext, FunctionComponent, useState, useEffect } from "react";
-import { UserModel } from "../../models/user.model";
+import { UserModel } from "../../api/models/user.model";
 
 interface IUserContext {
   currentUser: UserModel | null;

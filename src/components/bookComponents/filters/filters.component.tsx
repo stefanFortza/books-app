@@ -1,19 +1,22 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { FunctionComponent } from "react";
-import { db } from "../../../database/db";
+import { db } from "../../../api/database/db";
+import { useAPI } from "../../../utils/hooks";
 
 interface FiltersProps {
   setFilters: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Filters: FunctionComponent<FiltersProps> = ({ setFilters }) => {
-  const books = useLiveQuery(() => db.books.toArray());
+  const { BooksAPI } = useAPI();
+  const books = useLiveQuery(() => BooksAPI.getAll());
+
   return (
     <>
       <h1>Filters</h1>
       <div
         onClick={(e) => {
-          setFilters(e.currentTarget.innerText);
+          setFilters(e.currentTarget.innerText.toLowerCase());
         }}
       >
         all
@@ -28,7 +31,7 @@ const Filters: FunctionComponent<FiltersProps> = ({ setFilters }) => {
               <div
                 key={author}
                 onClick={(e) => {
-                  setFilters(e.currentTarget.innerText);
+                  setFilters(e.currentTarget.innerText.toLowerCase());
                 }}
               >
                 {author}

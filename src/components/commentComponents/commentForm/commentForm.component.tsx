@@ -1,10 +1,10 @@
-import { FunctionComponent, useContext, useState } from "react";
-import { Button, Card, Col, Form, FormControl, Row } from "react-bootstrap";
+import { FunctionComponent, useState } from "react";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../../contexts/user/user.context";
-import { db } from "../../../database/db";
-import { BookModel } from "../../../models/book.model";
+import { BookModel } from "../../../api/models/book.model";
 import "./commentForm.styles.css";
+import { useUserContext } from "../../../utils/utils";
+import { useAPI } from "../../../utils/hooks";
 
 interface CommentFormProps {
   currentBook: BookModel;
@@ -17,7 +17,8 @@ const initialValues = {
 
 //TODO Add formik
 const CommentForm: FunctionComponent<CommentFormProps> = ({ currentBook }) => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser } = useUserContext();
+  const { CommentsAPI } = useAPI();
   const navigate = useNavigate();
   const [formFields, setFormFields] = useState(initialValues);
   const [validated, setValidated] = useState(false);
@@ -36,6 +37,7 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ currentBook }) => {
       navigate("/auth");
       return;
     }
+
     const form = event.currentTarget;
     event.preventDefault();
 
@@ -45,9 +47,13 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ currentBook }) => {
       return;
     }
 
-    const id = await db.comments.add({
+    if (!currentBook.id) {
+      throw new Error("no book id");
+    }
+
+    const id = await CommentsAPI.add({
       ...formFields,
-      bookId: currentBook?.id,
+      bookId: currentBook.id,
       userId: currentUser.id,
     });
 

@@ -1,8 +1,11 @@
 import { FunctionComponent } from "react";
 import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../../database/db";
-import { BookModel } from "../../../models/book.model";
+import API from "../../../api/API";
+import { BookModel } from "../../../api/models/book.model";
+import { AbsolutePageNames } from "../../../pages/navigation/pagesNames";
+import { useAPI } from "../../../utils/hooks";
+import { useUserContext } from "../../../utils/utils";
 
 interface BookPageDataProps {
   book: BookModel;
@@ -10,14 +13,25 @@ interface BookPageDataProps {
 
 const BookPageData: FunctionComponent<BookPageDataProps> = ({ book }) => {
   const navigate = useNavigate();
-  const { title, author, description, price, id } = book;
+  const API = useAPI();
+  const { currentUser } = useUserContext();
+  const { title, author, description, price, id, userId } = book;
 
   const handleDelete: React.MouseEventHandler<HTMLButtonElement> = async (
     event
   ) => {
-    const n = await db.books.where({ id }).delete();
+    if (book.id) {
+      await API.BooksAPI.delete(book.id);
+    }
     navigate("/");
   };
+
+  const handleEdit: React.MouseEventHandler<HTMLButtonElement> = async (
+    event
+  ) => {
+    navigate(`/books/edit/${id}`);
+  };
+
   return (
     <>
       <Row xs={1} md={2} className="g-4 mt-4">
@@ -30,10 +44,12 @@ const BookPageData: FunctionComponent<BookPageDataProps> = ({ book }) => {
             />
           </Card>
         </Col>
-        <Col>
-          <Card>
+        <Col style={{ height: "1000px" }}>
+          <Card className="p-5">
             <Card.Body>
-              <Card.Title className="">{title}</Card.Title>
+              <Card.Title className="" style={{ fontSize: "50px" }}>
+                {title}
+              </Card.Title>
               <Card.Text className="text-center"></Card.Text>
             </Card.Body>
             <ListGroup className="list-group-flush">
@@ -41,24 +57,38 @@ const BookPageData: FunctionComponent<BookPageDataProps> = ({ book }) => {
               <ListGroup.Item>{description}</ListGroup.Item>
               <ListGroup.Item className="text-center">{author}</ListGroup.Item>
             </ListGroup>
+            <Row md={3} className="justify-content-center">
+              <Button
+                variant="primary"
+                className="mt-3 mx-3"
+                style={{ width: "80%" }}
+              >
+                Add to cart
+              </Button>
+              {currentUser?.id === book.userId ? (
+                <Col>
+                  <Button
+                    variant="danger"
+                    className="mt-3 mx-3"
+                    onClick={handleDelete}
+                    style={{ width: "100%" }}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="warning"
+                    className="mt-3 mx-3"
+                    style={{ width: "100%" }}
+                    onClick={handleEdit}
+                  >
+                    Edit
+                  </Button>
+                </Col>
+              ) : (
+                ""
+              )}
+            </Row>
           </Card>
-          <Row>
-            <Button
-              variant="primary"
-              className="mt-3 mx-3 ms-auto"
-              style={{ width: "40%" }}
-            >
-              Add to cart
-            </Button>
-            <Button
-              variant="danger"
-              className="mt-3 mx-3 me-auto"
-              style={{ width: "40%" }}
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
-          </Row>
         </Col>
       </Row>
     </>

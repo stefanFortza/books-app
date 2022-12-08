@@ -1,14 +1,16 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { FunctionComponent, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { db } from "../../../database/db";
+import { db } from "../../../api/database/db";
+import { useAPI } from "../../../utils/hooks";
 import Book from "../book/book.component";
 import Filters from "../filters/filters.component";
 
 interface BooksProps {}
 
 const BookList: FunctionComponent<BooksProps> = () => {
-  const books = useLiveQuery(() => db.books.toArray()) || [];
+  const { BooksAPI } = useAPI();
+  const books = useLiveQuery(() => BooksAPI.getAll()) || [];
   const [filters, setFilters] = useState("all");
 
   return (
