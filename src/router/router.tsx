@@ -1,10 +1,12 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useParams } from "react-router-dom";
 import AddBookPage from "../pages/addBookPage/addBookPage";
 import AuthentificationPage from "../pages/authentificationPage/authentificationPage";
 import BookPage from "../pages/bookPage/bookPage";
+import EditBookPage from "../pages/editBookPage/editBookPage";
 import Home from "../pages/home/home";
 import Navigation from "../pages/navigation/navigation";
 import { PageNames } from "../pages/navigation/pagesNames";
+import { useAPI } from "../utils/hooks";
 import { withAuth } from "../utils/utils";
 
 export const router = createBrowserRouter([
@@ -32,10 +34,16 @@ export const router = createBrowserRouter([
           },
           {
             path: PageNames.EditBook,
-            loader: withAuth(({ request, params }) => {
-              console.log(params);
+            loader: withAuth(async ({ request, params }) => {
+              const { bookId } = params;
+              const { BooksAPI } = useAPI();
+              if (!bookId) return;
+
+              return BooksAPI.get({
+                id: parseInt(bookId),
+              });
             }),
-            element: <div>edit book</div>,
+            element: <EditBookPage />,
           },
           {
             path: PageNames.ShowBook,
