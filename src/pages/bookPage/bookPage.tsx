@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import BookPageData from "../../components/bookComponents/bookPageData/bookPageData.component";
 import CommentForm from "../../components/commentComponents/commentForm/commentForm.component";
 import CommentList from "../../components/commentComponents/commentList/commentList.component";
-import { db } from "../../api/database/db";
 import { useAPI } from "../../utils/hooks";
 
 interface BookProps {}

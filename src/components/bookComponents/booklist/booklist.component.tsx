@@ -10,7 +10,7 @@ interface BooksProps {}
 
 const BookList: FunctionComponent<BooksProps> = () => {
   const { BooksAPI } = useAPI();
-  const books = useLiveQuery(() => BooksAPI.getAll()) || [];
+  const books = useLiveQuery(() => BooksAPI.table.limit(100).toArray()) || [];
   const [filters, setFilters] = useState("all");
 
   return (
@@ -19,7 +19,7 @@ const BookList: FunctionComponent<BooksProps> = () => {
         <Filters setFilters={setFilters} />
       </Col>
       <Col md={10}>
-        <Row xs={1} md={3} className="g-4">
+        <Row xs={1} md={3} lg={4} xl={5} className="g-4">
           {books &&
             books
               .filter(

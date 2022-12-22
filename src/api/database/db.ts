@@ -11,9 +11,10 @@ export class MySubClassedDexie extends Dexie {
   users!: Table<UserModel>;
 
   constructor() {
-    super("myDatabase");
-    this.version(12).stores({
-      books: "++id, title, price, author, description, userId", // Primary key and indexed props
+    super("bookDatabase");
+    this.version(7).stores({
+      books:
+        "++id, isbn, title, author, yearOfPublication, publisher, imageURLS, imageURLM, imageURLL, price, description, userId, rating", // Primary key and indexed props
       comments: "++id, comment, bookId, rating, userId",
       users: "++id, &email, password, username",
     });

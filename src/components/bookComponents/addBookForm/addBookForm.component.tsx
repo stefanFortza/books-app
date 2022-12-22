@@ -1,18 +1,25 @@
 import { useFormik } from "formik";
-import { FunctionComponent, useContext } from "react";
+import React, { FunctionComponent, useContext } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { BookModel } from "../../../api/models/book.model";
 import { UserContext } from "../../../contexts/user/user.context";
 import { useAPI } from "../../../utils/hooks";
 
 interface AddABookFormProps {}
 
-const defaultFormFields = {
+type FormFieldType = Pick<
+  BookModel,
+  "title" | "author" | "price" | "description"
+> & { image: File | null };
+
+const defaultFormFields: FormFieldType = {
   title: "",
   price: 0,
   author: "",
   description: "",
+  image: null,
 };
 
 const AddBookSchema = Yup.object().shape({
@@ -29,6 +36,7 @@ const AddBookSchema = Yup.object().shape({
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
+  image: Yup.mixed().required(),
 });
 
 const AddBookForm: FunctionComponent<AddABookFormProps> = (props) => {
@@ -39,16 +47,33 @@ const AddBookForm: FunctionComponent<AddABookFormProps> = (props) => {
     initialValues: defaultFormFields,
     onSubmit: async (values, { setSubmitting, validateForm }) => {
       setSubmitting(false);
+      const { author, description, image, price, title } = values;
+      if (!image) {
+        return;
+      }
+
       const id = await BooksAPI.add({
-        ...values,
+        author,
+        description,
+        image,
+        price,
+        title,
         userId: currentUser?.id!,
       });
       navigate(`/books/show/${id}`);
     },
     validationSchema: AddBookSchema,
   });
-  const { handleSubmit, handleChange, handleBlur, values, touched, errors } =
-    formik;
+  const {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    setFieldValue,
+    values,
+    touched,
+    errors,
+  } = formik;
+
   return (
     <Form
       noValidate
@@ -72,6 +97,31 @@ const AddBookForm: FunctionComponent<AddABookFormProps> = (props) => {
         <Form.Control.Feedback type="invalid">
           {errors.title}
         </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group controlId="formGridImage">
+        <Form.Label>Image</Form.Label>
+        <InputGroup hasValidation>
+          <Form.Control
+            required
+            type="file"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              if (event.currentTarget.files) {
+                // const file = event.currentTarget.files[0]
+                setFieldValue("image", event.currentTarget.files[0]);
+              }
+            }}
+            onBlur={handleBlur}
+            // value={values.}
+            name="price"
+            isValid={touched.image && !errors.image}
+            isInvalid={touched.image && !!errors.image}
+          />
+          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            {errors.price}
+          </Form.Control.Feedback>
+        </InputGroup>
       </Form.Group>
 
       <Form.Group controlId="formGridPassword">

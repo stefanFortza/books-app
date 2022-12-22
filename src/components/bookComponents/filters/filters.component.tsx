@@ -9,7 +9,7 @@ interface FiltersProps {
 
 const Filters: FunctionComponent<FiltersProps> = ({ setFilters }) => {
   const { BooksAPI } = useAPI();
-  const books = useLiveQuery(() => BooksAPI.getAll());
+  const books = useLiveQuery(() => BooksAPI.table.limit(100).toArray());
 
   return (
     <>

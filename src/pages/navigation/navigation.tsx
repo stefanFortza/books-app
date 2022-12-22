@@ -1,6 +1,7 @@
 import { FunctionComponent, useContext, useEffect, useState } from "react";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Outlet, useNavigate } from "react-router-dom";
+import seedDB from "../../api/populate/seed";
 import { UserContext } from "../../contexts/user/user.context";
 import { AbsolutePageNames, PageNames } from "./pagesNames";
 
@@ -57,6 +58,7 @@ const Navigation: FunctionComponent<NavigationProps> = () => {
                   Separated link
                 </NavDropdown.Item>
               </NavDropdown>
+              <Button onClick={seedDB as any}>SeedDB</Button>
             </Nav>
             <Nav>
               {currentUser ? (
